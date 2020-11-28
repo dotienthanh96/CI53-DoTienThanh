@@ -8,8 +8,3 @@ console.log("Tính trừu tượng (Abstraction)")
 
 console.log("Bài 2")
 
-let a = [ ] ; 
-let b = Number(prompt("Nhập Số"))
-function num() {
-    
-}
