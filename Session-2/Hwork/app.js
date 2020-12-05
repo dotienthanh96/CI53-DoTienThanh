@@ -4,12 +4,18 @@ class Book {
     name;
     price;
     publishedDate;
-    update(data) {}
-    constructor(id,name,price,publishedDate) {
-        this.id = id ;
+    update(data) {
+        for(let key in data) {
+            if(this[key] != undefined && key !="id") {
+                this[key] = data[key]
+            }
+        }
+    };
+    constructor(name,price,publishedDate) {
         this.name = name;
         this.price = price;
         this.publishedDate = publishedDate;
+        this.id = uuid.v4();
         console.log(this)
     }
     
@@ -18,8 +24,8 @@ class Book {
 class ComicBook extends Book {
     funny ; 
     pageNumber;
-    constructor(id,name,price,publishedDate,funny,pageNumber) {
-        super(id,name,price,publishedDate);
+    constructor(name,price,publishedDate,funny,pageNumber) {
+        super(name,price,publishedDate);
         this.funny = funny;
         this.pageNumber = pageNumber;
     }
@@ -28,8 +34,8 @@ class ComicBook extends Book {
 class TextBook extends Book {
     subject ; 
     grade;
-    constructor(id,name,price,publishedDate,subject,grade) {
-        super(id,name,price,publishedDate) ;
+    constructor(name,price,publishedDate,subject,grade) {
+        super(name,price,publishedDate) ;
         this.subject = subject;
         this.grade  = grade ; 
     }
@@ -37,8 +43,8 @@ class TextBook extends Book {
 
 class ScienceBook extends Book {
     major ; 
-    constructor(id,name,price,publishedDate,major) {
-        super(id,name,price,publishedDate);
+    constructor(name,price,publishedDate,major) {
+        super(name,price,publishedDate);
         this.major = major ;
     }
 }
@@ -47,15 +53,38 @@ class BookShelf {
     name ; 
     owner ;
     dateModified ;
-    addBook(book) {};
-    updateBook(id,data) {}; 
-    deleteBook(id) {} ; 
-    showBook() {};
-    findBook(name) {};
+    books;
+    addBook(book) {
+        if(book instanceof Book) {
+            this.books.push(book);
+        }
+    };
+    updateBook(id,data) {
+        // for(let book of this.books) {
+        //     if(book.id===id) { book.update(data)
+        //         break;
+        //     }
+        // }
+        let book = this.books.find(function(item) {
+            return item.id === id ;
+        })
+        if(book != null) book.update(data);
+    }; 
+    deleteBook(id) {
+        let bookIndex = this.books.findIndex(item => item.id === id );
+        if(bookIndex > -1) this.books.splice(bookIndex,1);
+    } ; 
+    showBook() {
+        console.log(this.books);
+    };
+    findBook(name) {
+        return this.books.filter(item => item.name === name );
+    };
     constructor(name,owner,dateModified) {
         this.name = name ;
         this.owner = owner;
         this.dateModified = dateModified ;
+        this.book = [] ;
         console.log(this)
     }
 }
